@@ -1,0 +1,62 @@
+
+.container h1{
+display: inline-block;
+}
+.container a{
+    float: right;
+    margin-top: 40px;
+    margin-left:20px ;
+
+}
+button{
+    float: right;
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+.inputData input{
+    margin-left: 8em;
+}
+.inputData select{
+    margin-left: 8em;
+}
+.inputData label{
+    position: absolute;
+}
+.inputData select{
+    position: absolute;
+}
+section{
+    padding: 80px 80px;
+
+}
+.content{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.card{
+    background-color: rgb(255, 255, 255);
+    width: 14em;
+    box-shadow: 0 5px 25px rgba(1 1 1 /15%);
+    border-radius: 10px;
+    padding: 25px;
+    margin: 10px;
+    transition: 0.5s ease;
+}
+.card:hover{
+    transform: scale(1.2);
+    z-index: 50;
+}
+.info{
+    text-align: center;
+}
+
+.info h3{
+    color: rgb(0, 0, 0);
+    font-size: 1.2em;
+    font-weight: 700;
+    margin: 10px;
+
+}
