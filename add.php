@@ -101,7 +101,7 @@ if(isset($_POST['form_submit'])){
     <div class="container">
     <form  action="add.php" method="POST" id="product_form">
         <h1 class="display-1">Product Add</h1>
-        <a href="list.php" class="btn btn-danger">Cancel</a>
+        <a href="index.php" class="btn btn-danger">Cancel</a>
         <button type="submit" name="form_submit" class="btn btn-success">Save</button>   
         <hr>
         <div class="row">
