@@ -1,6 +1,5 @@
 <?php
 include "basic.php";
-$errorMSG = "";
 
 function return_SKU_value() {
   global $conn;
@@ -28,21 +27,21 @@ function new_DVD_product($sku, $name,$price,$size) {
     $sql="INSERT INTO products(SKU, name, price, size )
                        VALUES ('$sku','$name','$price','$size')";
     mysqli_query($conn, $sql);
-    header("Location: list.php");
+    header("Location: index.php");
   }
 function new_Furniture_product($sku, $name,$price,$height,$width,$length) {
     global $conn;
     $sql="INSERT INTO products(SKU, name, price, height, width , length )
                        VALUES ('$sku','$name','$price','$height','$width','$length')";
     mysqli_query($conn, $sql);
-    header("Location: list.php");
+    header("Location: index.php");
  }
 function new_Book_product($sku, $name,$price,$weight) {
   global $conn;
   $sql="INSERT INTO products(SKU, name, price, weight )
                      VALUES ('$sku','$name','$price','$weight')";
   mysqli_query($conn, $sql);
-  header("Location: list.php");
+  header("Location: index.php");
 }
 function Input($val){
   $arr = [

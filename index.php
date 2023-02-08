@@ -16,7 +16,7 @@ function massDelete($val){
             $sql = "DELETE FROM products WHERE id = '$id'";
             mysqli_query($conn, $sql);
             }
-        header("Location:list.php"); 
+        header("Location:index.php"); 
 }
 if(isset($_POST['check'])){
 massDelete($_POST['check']);}
