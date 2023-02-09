@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include "basic.php";
 
 function return_SKU_value() {
@@ -27,21 +28,21 @@ function new_DVD_product($sku, $name,$price,$size) {
     $sql="INSERT INTO products(SKU, name, price, size )
                        VALUES ('$sku','$name','$price','$size')";
     mysqli_query($conn, $sql);
-    header("Location: index.php");
+    header("Location:index.php");
   }
 function new_Furniture_product($sku, $name,$price,$height,$width,$length) {
     global $conn;
     $sql="INSERT INTO products(SKU, name, price, height, width , length )
                        VALUES ('$sku','$name','$price','$height','$width','$length')";
     mysqli_query($conn, $sql);
-    header("Location: index.php");
+     header("Location: index.php");
  }
 function new_Book_product($sku, $name,$price,$weight) {
   global $conn;
   $sql="INSERT INTO products(SKU, name, price, weight )
                      VALUES ('$sku','$name','$price','$weight')";
   mysqli_query($conn, $sql);
-  header("Location: index.php");
+   header("Location: index.php");
 }
 function Input($val){
   $arr = [
@@ -107,36 +108,36 @@ if(isset($_POST['form_submit'])){
         <div class="row">
                     <div class="inputData">
                         <label>SKU</label>
-                        <input type="text" required name="sku" id="sku"><br>
-                        <p id="unique"></p><br>
+                        <input type="text" pattern="[a-zA-Z0-9-_]+" required name="sku" id="sku"><br><br>
+                        
                         <label>Name</label>
                         <input type="text" required name="name" id="name"><br><br>
 
                         <label>Price ($)</label>
-                        <input type="text" required name="price" id="price" ><br><br>
+                        <input type="number" required name="price" id="price" ><br><br>
 
                         <label>Type Switcher</label>
-                        <select name="switcher" id="selectOP" onchange="selector.getval(value)">
+                        <select name="switcher" id="productType" onchange="selector.getval(value)">
                              <option value="" disabled selected >Select Switcher</option>
                              <option value="DVD" >DVD</option>
                              <option value="Furniture">Furniture</option>
                              <option value="Book">Book</option>
                         </select><br><br>
-                        <div id="size" style="display: none;">
+                        <div id="sizee" style="display: none;">
                           <label>Size (MB)</label>
-                          <input type="text" name="size" placeholder="Size"><br><br>
+                          <input type="number"id="size" name="size" placeholder="Size"><br><br>
                           <label><b>Please enter the size of DVD in Megabytes</b></label>
                         </div>
                         <div id="dimensions" style="display: none;">
                           <label>Dimensions (CM)</label>
-                          <input type="text" name="height" placeholder="Height"><br>
-                          <input type="text" name="width" placeholder="Width" ><br>
-                          <input type="text" name="length" placeholder="Length" ><br><br>
+                          <input type="number" id="height" name="height" placeholder="Height"><br>
+                          <input type="number" id="width" name="width" placeholder="Width" ><br>
+                          <input type="number" id="length" name="length" placeholder="Length" ><br><br>
                           <label><b>Please enter the Dimensions in centimeters</b></label>
                         </div>
-                        <div id="weight" style="display: none;">
+                        <div id="weightt" style="display: none;">
                           <label>Weight (K.g)</label>
-                          <input type="text" name="weight" placeholder="Weight"><br><br>
+                          <input type="number" id="weight" name="weight" placeholder="Weight"><br><br>
                           <label><b>Please enter the Weight of the Book in Kilograms</b></label>
                         </div>
                         
@@ -149,6 +150,4 @@ if(isset($_POST['form_submit'])){
 
 </body>
 </html>
-
-
 

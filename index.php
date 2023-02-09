@@ -1,6 +1,6 @@
 <?php
+ob_start();
 include "basic.php";
-
 function products_list() {
     global $conn;
     $sql = "SELECT * FROM products";
@@ -16,11 +16,10 @@ function massDelete($val){
             $sql = "DELETE FROM products WHERE id = '$id'";
             mysqli_query($conn, $sql);
             }
-        header("Location:index.php"); 
+        header("Location:index.php");
 }
 if(isset($_POST['check'])){
 massDelete($_POST['check']);}
-
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +36,7 @@ massDelete($_POST['check']);}
     <div class="container">
         <form action="index.php" method="post">    
         <h1 class="display-1">Products List</h1>
-        <button type="submit" class="btn btn-danger">MASS DELETE</button>
+        <button type="submit" id="delete-product-btn" class="btn btn-danger" >MASS DELETE</button>
         <a href="add.php" class="btn btn-success">ADD</a>
         <hr>
         <div class="row">
@@ -46,7 +45,7 @@ massDelete($_POST['check']);}
                  <?php while($product = mysqli_fetch_assoc($dataa)){  ?>
                 <div class="card">
                   <div class="info">
-                    <input type="checkbox" class="checkk" name="check[]" id="check" value="<?php echo $product['id']?>" style="margin-right: 90%;">
+                    <input type="checkbox" class="delete-checkbox" name="check[]" id="check" value="<?php echo $product['id']?>" style="margin-right: 90%;">
                    
                     <h3>SKU : <?php echo $product["SKU"]; ?> </h3>
                     <p>Name : <?php echo $product["name"]; ?> </p>
