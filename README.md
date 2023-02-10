@@ -1,4 +1,5 @@
 # ScandiWeb Assignment
-This is the link of the project below >>
+Project link >>
+
 https://scandiweb-assignment-test.000webhostapp.com/index.php
 
