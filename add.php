@@ -2,88 +2,141 @@
 ob_start();
 include "basic.php";
 
-function return_SKU_value() {
-  global $conn;
-  $sql = "SELECT SKU FROM products";
-  $data = mysqli_query($conn, $sql);
+abstract class Switcher{
+  var $sku;
+  var $name;
+  var $price;
+  function __construct($sku,$name,$price)
+  {
+      $this->sku   = $sku;
+      $this->name  = $name;
+      $this->price = $price; 
+  }    
+    
+  function validate()
+  {
+      $value="save";
+      global $conn;
+      $sql = "SELECT SKU FROM products";
+      $data = mysqli_query($conn, $sql);
 
-  return $data;
-
-}
-$skuu = return_SKU_value();
-
-function validate($SKU){
-  $value="save";
-    while($uniqueSKU = mysqli_fetch_assoc($SKU)){
-      if($_POST['sku'] == $uniqueSKU['SKU']){        
-        echo"<p><span style='color:red;'>SKU </span>: You have entered this value before !</p>";
-        echo"<b>Please Enter a unique Value<b>";
-        $value="error";
-      }
-    } 
-    return $value;
- }
-function new_DVD_product($sku, $name,$price,$size) {
-    global $conn;
-    $sql="INSERT INTO products(SKU, name, price, size )
-                       VALUES ('$sku','$name','$price','$size')";
-    mysqli_query($conn, $sql);
-    header("Location:index.php");
+      while($uniqueSKU = mysqli_fetch_assoc($data))
+      {
+          if($_POST['sku'] == $uniqueSKU['SKU'])
+          {        
+            echo"<p><span style='color:red;'>SKU </span>: You have entered this value before !</p>";
+            echo"<b>Please Enter a unique Value<b>";
+            $value="error";
+          }
+      } 
+      return $value;
   }
-function new_Furniture_product($sku, $name,$price,$height,$width,$length) {
+    abstract function save_new_product();
+}
+class DVD extends Switcher
+{
+  var $size;
+  function __construct($sku,$name,$price,$size)
+  {
+      parent::__construct($sku,$name,$price);
+      $this->size = $size;
+  }
+  function save_new_product()
+  {
+      global $conn;        
+      $sql="INSERT INTO products(SKU, name, price, size )
+                  VALUES ('$this->sku','$this->name','$this->price','$this->size')";
+      mysqli_query($conn, $sql);
+      header("Location:index.php");
+  }
+}
+class Furniture extends Switcher
+{
+  var $height;
+  var $width;
+  var $length;
+  function __construct($sku,$name,$price,$height,$width,$length)
+  {
+      parent::__construct($sku,$name,$price);
+      $this->height  = $height;
+      $this->width   = $width;
+      $this->length  = $length;
+  }
+  function save_new_product()
+  {
     global $conn;
     $sql="INSERT INTO products(SKU, name, price, height, width , length )
-                       VALUES ('$sku','$name','$price','$height','$width','$length')";
+                 VALUES ('$this->sku','$this->name','$this->price','$this->height','$this->width','$this->length')";
     mysqli_query($conn, $sql);
      header("Location: index.php");
- }
-function new_Book_product($sku, $name,$price,$weight) {
-  global $conn;
-  $sql="INSERT INTO products(SKU, name, price, weight )
-                     VALUES ('$sku','$name','$price','$weight')";
-  mysqli_query($conn, $sql);
-   header("Location: index.php");
+  }
 }
-function Input($val){
+class Book extends Switcher
+{
+  var $weight;
+  function __construct($sku,$name,$price,$weight)
+  {
+      parent::__construct($sku,$name,$price);
+      $this->weight  = $weight;
+  }
+  function save_new_product()
+  {
+    global $conn;
+    $sql="INSERT INTO products(SKU, name, price, weight )
+                 VALUES ('$this->sku','$this->name','$this->price','$this->weight')";
+    mysqli_query($conn, $sql);
+    header("Location: index.php");
+  }
+}
+
+function Input($val)
+{
   $arr = [
     "DVD" => function()
     {
-      $sku = $_POST['sku'];
-      $name = $_POST['name'];
+      $sku   = $_POST['sku'];
+      $name  = $_POST['name'];
       $price = $_POST['price'];
-      $size = $_POST['size'];
-      return new_DVD_product($sku,$name,$price,$size);
+      $size  = $_POST['size'];
+      $dvd   = new DVD($sku,$name,$price,$size);
+      if($dvd->validate()=="save")
+      {
+        return $dvd->save_new_product();
+      }
     },
     "Furniture" => function()
     {
-      $sku = $_POST['sku'];
-      $name = $_POST['name'];
-      $price = $_POST['price'];
-      $height = $_POST['height'];
-      $width = $_POST['width'];
-      $length = $_POST['length']; 
-      return new_Furniture_product($sku, $name,$price,$height,$width,$length);
-
+      $sku       = $_POST['sku'];
+      $name      = $_POST['name'];
+      $price     = $_POST['price'];
+      $height    = $_POST['height'];
+      $width     = $_POST['width'];
+      $length    = $_POST['length'];
+      $furniture = new Furniture($sku, $name,$price,$height,$width,$length);
+      if($furniture->validate()=="save")
+      {
+        return $furniture->save_new_product();
+      } 
     },
     "Book" => function()
     {
-      $sku = $_POST['sku'];
-      $name = $_POST['name'];
-      $price = $_POST['price'];
+      $sku    = $_POST['sku'];
+      $name   = $_POST['name'];
+      $price  = $_POST['price'];
       $weight = $_POST['weight'];
-      return new_Book_product($sku, $name,$price,$weight);
-    
+      $book   = new Book($sku, $name,$price,$weight); 
+      if($book->validate()=="save")
+      {
+        return $book->save_new_product();
+      }    
     }
   ];
 return $arr[$val]();
 }
-if(isset($_POST['form_submit'])){
-    $value = validate($skuu);
-    if($value == "save"){
-      Input($_POST['switcher']);
-    }
-  
-  
+
+if(isset($_POST['form_submit']))
+{
+  Input($_POST['switcher']);
 };
 
 ?>
